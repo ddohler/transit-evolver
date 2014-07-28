@@ -28,6 +28,7 @@ public class TransitSystemEvaluator implements FitnessEvaluator<TransitSystem> {
                 fitness -= link.getBaseCost(); // TODO: Make this smarter (graph traversal)
             }
         }
+        if (fitness < 0) fitness = 0;
         return fitness;
     }
 

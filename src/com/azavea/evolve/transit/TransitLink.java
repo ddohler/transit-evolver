@@ -15,8 +15,14 @@ public class TransitLink {
     private final double baseValue; // The value of this link, based only on the two cells it connects
 
     public TransitLink(CityCell cell1, CityCell cell2, double cost, double value) {
-        this.cell1 = cell1;
-        this.cell2 = cell2;
+        // Links are not directed, so enforce an arbitrary ordering so that equality and hashCodes are easier.
+        if ((cell1.getLocation().compareTo(cell2.getLocation())) > 0) {
+            this.cell1 = cell1;
+            this.cell2 = cell2;
+        } else {
+            this.cell1 = cell2;
+            this.cell2 = cell1;
+        }
         this.baseCost = cost;
         this.baseValue = value;
     }
@@ -43,7 +49,14 @@ public class TransitLink {
         if (other == this) return true;
         if (!(other instanceof TransitLink)) return false;
         TransitLink otherLink = (TransitLink)other;
-        if (cell1 == otherLink.cell1 && cell2 == otherLink.cell2) return true;
+        if (cell1.getLocation() == otherLink.cell1.getLocation() && cell2.getLocation() == otherLink.cell2.getLocation()) {
+            return true;
+        }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return (cell1.toString() + cell2.toString()).hashCode();
     }
 }

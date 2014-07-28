@@ -41,4 +41,13 @@ public class CityCell {
     public double distanceToCell(CityCell other) {
         return location.distance_to(other.location);
     }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public String toString() {
+        return location.toString();
+    }
 }

@@ -10,10 +10,13 @@ import java.util.List;
  */
 public class City {
     private final ArrayList<CityCell> cells;
+    private final double costFactor;
+    private final double valueFactor;
 
-    public City(ArrayList<CityCell> cells) {
+    public City(ArrayList<CityCell> cells, double costFactor, double valueFactor) {
         this.cells = cells;
-
+        this.costFactor = costFactor;
+        this.valueFactor = valueFactor;
         // Normalize attraction scores over the whole city to be in 0...1.
         // Guarantees that all cells have a relativeAttraction score.
         // Get the sum
@@ -36,7 +39,7 @@ public class City {
      *   the Euclidean distance between them.
      */
     public double generateBaseLinkCost(CityCell cell1, CityCell cell2) {
-        return cell1.distanceToCell(cell2);
+        return costFactor * cell1.distanceToCell(cell2);
     }
 
     /*
@@ -44,6 +47,7 @@ public class City {
      * without factoring in any values to other cells).
      */
     public double generateBaseLinkValue(CityCell cell1, CityCell cell2) {
-        return cell1.getProduction() * cell2.getRelativeAttraction() + cell2.getProduction() * cell1.getRelativeAttraction();
+        return valueFactor * (cell1.getProduction() * cell2.getRelativeAttraction() +
+                                cell2.getProduction() * cell1.getRelativeAttraction());
     }
 }

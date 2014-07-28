@@ -23,7 +23,7 @@ public class TransitSystemEvaluator implements FitnessEvaluator<TransitSystem> {
         for (TransitLink link: transitSystem.getLinks()) {
             // Duplicate links don't provide further value; assume that all links can have their capacity
             // changed to meet demand without incurring additional cost beyond the base cost.
-            if (uniqueLinks.add(link)) {
+            if (!link.isSelfLink() && uniqueLinks.add(link)) {
                 fitness += link.getBaseValue();
                 fitness -= link.getBaseCost(); // TODO: Make this smarter (graph traversal)
             }

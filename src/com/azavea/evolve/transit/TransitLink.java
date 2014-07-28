@@ -43,6 +43,10 @@ public class TransitLink {
         return baseValue;
     }
 
+    public boolean isSelfLink() {
+        return cell1 == cell2;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null) return false;
@@ -58,5 +62,10 @@ public class TransitLink {
     @Override
     public int hashCode() {
         return (cell1.toString() + cell2.toString()).hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return cell1.toString() + "-->" + cell2.toString();
     }
 }

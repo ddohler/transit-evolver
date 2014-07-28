@@ -13,4 +13,8 @@ public class TransitSystem {
     public TransitSystem(List<TransitLink> links) {
         this.links = links;
     }
+
+    public List<TransitLink> getLinks() {
+        return links;
+    }
 }

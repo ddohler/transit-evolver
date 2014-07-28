@@ -22,7 +22,7 @@ public class TransitSystemCandidateFactory extends AbstractCandidateFactory<Tran
      * number of links in each TransitSystem is equal to the number of cells in the City, giving a density of
      * 1 link per cell, on average.
      */
-    public TransitSystemCandidateFactory(City city, int initialDensity) {
+    public TransitSystemCandidateFactory(City city, double initialDensity) {
         this.city = city;
         this.initialDensity = initialDensity;
     }

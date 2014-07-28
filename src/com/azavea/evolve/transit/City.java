@@ -1,5 +1,6 @@
 package com.azavea.evolve.transit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,9 +9,9 @@ import java.util.List;
  * Represents a city as a list of locations within the city.
  */
 public class City {
-    private final List<CityCell> cells;
+    private final ArrayList<CityCell> cells;
 
-    public City(List<CityCell> cells) {
+    public City(ArrayList<CityCell> cells) {
         this.cells = cells;
 
         // Normalize attraction scores over the whole city to be in 0...1.

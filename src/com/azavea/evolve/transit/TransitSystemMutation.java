@@ -32,7 +32,7 @@ public class TransitSystemMutation implements EvolutionaryOperator<TransitSystem
         List<CityCell> cells = city.getCells();
 
         for (TransitSystem transitSys: population) {
-            ArrayList<TransitLink> systemLinks = new ArrayList<TransitLink>(transitSys.getLinks());
+            TransitSystem newSystem  = new TransitSystem(transitSys);
 
             // Add/remove a link?
             if (mutationProbability.nextEvent(rng)) {
@@ -44,12 +44,12 @@ public class TransitSystemMutation implements EvolutionaryOperator<TransitSystem
                     double cost = city.generateBaseLinkCost(pick1, pick2);
                     double val = city.generateBaseLinkValue(pick1, pick2);
 
-                    systemLinks.add(new TransitLink(pick1, pick2, cost, val));
+                    newSystem.addLink(pick1, pick2, cost, val);
                 } else { // Remove a random link when false.
-                    systemLinks.remove(rng.nextInt(systemLinks.size()));
+                    newSystem.removeLink(newSystem.getLinks().get(rng.nextInt(newSystem.numLinks())));
                 }
             }
-            results.add(new TransitSystem(systemLinks));
+            results.add(newSystem);
         }
         return results;
     }

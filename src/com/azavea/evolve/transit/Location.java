@@ -64,4 +64,9 @@ public class Location implements Comparable<Location> {
         }
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
 }

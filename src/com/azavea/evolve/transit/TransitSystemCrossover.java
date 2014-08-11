@@ -19,6 +19,9 @@ public class TransitSystemCrossover extends AbstractCrossover<TransitSystem> {
         List<TransitSystem> offspring = new LinkedList<TransitSystem>();
 
         for (List<TransitLink> links: offspringLinks) {
+            // This uses the slow constructor, but I don't see any way around it at the moment without implementing
+            // a TransitSystem-specific crossover function from scratch.
+            // This is the only place where it's used.
             offspring.add(new TransitSystem(links));
         }
 

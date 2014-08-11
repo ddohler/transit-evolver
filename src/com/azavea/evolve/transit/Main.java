@@ -97,7 +97,7 @@ public class Main {
         });
 
         // Actually evolve it
-        TransitSystem fittest = engine.evolve(50, 1, new Stagnation(1000, true));
+        TransitSystem fittest = engine.evolve(500, 1, new Stagnation(1000, true));
         System.out.println("Outputting Transit System Links\n");
         for(TransitLink tl: fittest.getLinks()) {
             System.out.println(tl.toString() + "\n");

@@ -7,13 +7,13 @@ package com.azavea.evolve.transit;
  */
 public class CityCell {
     // The amount of traffic emanating from this cell; population, basically.
-    private final double production;
+    protected final double production;
     // The desirability of visiting this cell.
-    private final double absoluteAttraction;
+    protected final double absoluteAttraction;
     // The desirability of this cell, weighted against all other cells.
-    private double relativeAttraction;
+    protected double relativeAttraction;
     // The location of this cell within the City (Euclidean at the moment).
-    private final Location location;
+    protected final Location location;
 
     public CityCell(double production, double absoluteAttraction, double x, double y) {
         this.production = production;

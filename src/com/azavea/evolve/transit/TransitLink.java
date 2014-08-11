@@ -9,12 +9,12 @@ package com.azavea.evolve.transit;
  * Value represents a rough measure of the value of having that connection to the residents of the city.
  */
 public class TransitLink {
-    private final CityCell cell1;
-    private final CityCell cell2;
+    private final TransitDestination cell1;
+    private final TransitDestination cell2;
     private final double baseCost; // The cost of this link, based only on the two cells it connects
     private final double baseValue; // The value of this link, based only on the two cells it connects
 
-    public TransitLink(CityCell cell1, CityCell cell2, double cost, double value) {
+    public TransitLink(TransitDestination cell1, TransitDestination cell2, double cost, double value) {
         // Links are not directed, so enforce an arbitrary ordering so that equality and hashCodes are easier.
         if ((cell1.getLocation().compareTo(cell2.getLocation())) > 0) {
             this.cell1 = cell1;
@@ -41,6 +41,16 @@ public class TransitLink {
 
     public double getBaseValue() {
         return baseValue;
+    }
+
+    public TransitDestination getConnected(TransitDestination cell) {
+        if (cell1 == cell) {
+            return cell2;
+        } else if (cell2 == cell) {
+            return cell1;
+        } else {
+            return null;
+        }
     }
 
     public boolean isSelfLink() {

@@ -47,6 +47,9 @@ public class City {
      * without factoring in any values to other cells).
      */
     public double generateBaseLinkValue(CityCell cell1, CityCell cell2) {
+        if (cell1 == cell2) {
+            return 0.0;
+        }
         return valueFactor * (cell1.getProduction() * cell2.getRelativeAttraction() +
                                 cell2.getProduction() * cell1.getRelativeAttraction());
     }

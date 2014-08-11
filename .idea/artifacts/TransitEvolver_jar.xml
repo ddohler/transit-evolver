@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TransitEvolver:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TransitEvolver_jar</output-path>
+    <root id="archive" name="TransitEvolver.jar">
+      <element id="module-output" name="TransitEvolver" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/watchmaker-framework-0.7.1/watchmaker-framework-0.7.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/watchmaker-framework-0.7.1/lib/uncommons-maths-1.2.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

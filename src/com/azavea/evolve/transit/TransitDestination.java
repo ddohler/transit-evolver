@@ -17,6 +17,7 @@ public class TransitDestination extends CityCell {
 
     public TransitDestination(CityCell cell) {
         super(cell.production, cell.absoluteAttraction, cell.location.x(), cell.location.y());
+        this.setRelativeAttraction(cell.getRelativeAttraction());
         links = new ArrayList<TransitLink>();
     }
 

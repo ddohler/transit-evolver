@@ -30,26 +30,27 @@ public class TransitSystemMutation implements EvolutionaryOperator<TransitSystem
     public List<TransitSystem> apply(List<TransitSystem> population, Random rng) {
         LinkedList<TransitSystem> results = new LinkedList<TransitSystem>();
         List<CityCell> cells = city.getCells();
-
         for (TransitSystem transitSys: population) {
-            TransitSystem newSystem  = new TransitSystem(transitSys);
+            ArrayList<TransitLink> systemLinks = new ArrayList<TransitLink>(transitSys.getLinks());
 
             // Add/remove a link?
             if (mutationProbability.nextEvent(rng)) {
                 // Choose between add / remove a link, equally likely.
                 if (rng.nextBoolean()) { // Add a random link when true.
-                    CityCell pick1 = cells.get(rng.nextInt(cells.size()));
-                    CityCell pick2 = cells.get(rng.nextInt(cells.size()));
+                    TransitDestination pick1 = new TransitDestination((cells.get(rng.nextInt(cells.size()))));
+                    TransitDestination pick2 = new TransitDestination(cells.get(rng.nextInt(cells.size())));
 
                     double cost = city.generateBaseLinkCost(pick1, pick2);
                     double val = city.generateBaseLinkValue(pick1, pick2);
 
-                    newSystem.addLink(pick1, pick2, cost, val);
+                    systemLinks.add(new TransitLink(pick1, pick2, cost, val));
                 } else { // Remove a random link when false.
-                    newSystem.removeLink(newSystem.getLinks().get(rng.nextInt(newSystem.numLinks())));
+                    if (systemLinks.size() != 0) {
+                        systemLinks.remove(rng.nextInt(systemLinks.size()));
+                    }
                 }
             }
-            results.add(newSystem);
+            results.add(new TransitSystem(systemLinks));
         }
         return results;
     }

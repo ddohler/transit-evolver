@@ -1,9 +1,6 @@
 package com.azavea.evolve.transit;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by AZVA-INT\ddohler on 7/25/14.
@@ -11,18 +8,21 @@ import java.util.List;
  * A transit system, represented by a list of links, that is, connections between places in a city.
  */
 public class TransitSystem {
-    private List<TransitLink> links;
-    private Hashtable<Location, TransitDestination> destinations;
+    private final List<TransitLink> links;
+    private final Hashtable<Location, TransitDestination> destinations;
 
     public TransitSystem() {
         this.links = new ArrayList<TransitLink>();
         this.destinations = new Hashtable<Location, TransitDestination>();
     }
 
-    // Copy constructor -- also not really recommended, but probably better than one below.
+    // Copy constructor -- also slow
     public TransitSystem(TransitSystem other) {
-        this.links = new ArrayList<TransitLink>(other.links);
-        this.destinations = new Hashtable<Location, TransitDestination>(other.destinations);
+        this.links = new ArrayList<TransitLink>(other.links.size());
+        this.destinations = new Hashtable<Location, TransitDestination>(other.destinations.size());
+        for (TransitLink link: other.links) {
+            addLink(link);
+        }
     }
 
     // Not recommended -- better to initialize an empty TransitSystem and let it
@@ -30,32 +30,28 @@ public class TransitSystem {
     // that don't operate well on graphs, this is necessary.
     // TODO: Write a crossover implementation that maintains destinations.
     public TransitSystem(List<TransitLink> links) {
-        this.links = links;
+        this.links = new ArrayList<TransitLink>(links.size());
         this.destinations = new Hashtable<Location, TransitDestination>();
         // If constructed with only TransitLinks, bootstrap the Destination graph.
         // This is slow, so amortize when possible.
         for (TransitLink link: links) {
-            ArrayList<CityCell> cells = new ArrayList<CityCell>();
-            cells.add(link.getCell1());
-            cells.add(link.getCell2());
-            for (CityCell cell: cells) {
-                TransitDestination dest = getOrCreateDestination(cell);
-                dest.addLink(link);
-            }
+            addLink(link);
         }
     }
 
     private TransitDestination getOrCreateDestination(CityCell cell) {
         Location loc = cell.getLocation();
-        if (destinations.contains(loc)) {
+        if (destinations.containsKey(loc)) {
             return destinations.get(loc);
         } else {
-            return destinations.put(loc, new TransitDestination(cell));
+            TransitDestination newDest = new TransitDestination(cell);
+            destinations.put(loc, newDest);
+            return newDest;
         }
     }
 
     private boolean removeLinkFromDest(CityCell cell, TransitLink link) {
-        if (destinations.contains(cell.getLocation())) {
+        if (destinations.containsKey(cell.getLocation())) {
             destinations.get(cell.getLocation()).removeLink(link);
             return true;
         }
@@ -75,7 +71,7 @@ public class TransitSystem {
     }
 
     // Add a link to this system -- manages the destinations table.
-    public void addLink(CityCell cell1, CityCell cell2, double cost, double val) {
+    private void addLink(CityCell cell1, CityCell cell2, double cost, double val) {
         TransitDestination dest1 = getOrCreateDestination(cell1);
         TransitDestination dest2 = getOrCreateDestination(cell2);
         TransitLink newLink = new TransitLink(dest1, dest2, cost, val);
@@ -84,8 +80,18 @@ public class TransitSystem {
         links.add(newLink);
     }
 
+    // Add a link based on a TransitLink object.
+    private void addLink(TransitLink link) {
+        TransitDestination dest1 = getOrCreateDestination(link.getCell1());
+        TransitDestination dest2 = getOrCreateDestination(link.getCell2());
+        TransitLink newLink = new TransitLink(dest1, dest2, link.getBaseCost(), link.getBaseValue());
+        dest1.addLink(newLink);
+        dest2.addLink(newLink);
+        links.add(newLink);
+    }
+
     // Remove a link from this system, and remove it from its destinations, too.
-    public void removeLink(TransitLink link) {
+    private void removeLink(TransitLink link) {
         removeLinkFromDest(link.getCell1(), link);
         removeLinkFromDest(link.getCell2(), link);
         links.remove(link);

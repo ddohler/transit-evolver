@@ -53,16 +53,16 @@ public class TransitSystemCandidateFactory extends AbstractCandidateFactory<Tran
     public TransitSystem generateRandomCandidate(Random rng) {
         int desiredLinks = (int)(initialDensity * city.getCells().size());
         List<CityCell> cells = city.getCells();
-        TransitSystem newSystem = new TransitSystem();
-        while (newSystem.numLinks() < desiredLinks) {
-            CityCell pick1 = cells.get(rng.nextInt(cells.size()));
-            CityCell pick2 = cells.get(rng.nextInt(cells.size()));
+        List<TransitLink> systemLinks = new ArrayList<TransitLink>(desiredLinks);
+        while (systemLinks.size() < desiredLinks) {
+            TransitDestination pick1 = new TransitDestination(cells.get(rng.nextInt(cells.size())));
+            TransitDestination pick2 = new TransitDestination(cells.get(rng.nextInt(cells.size())));
 
             double cost = city.generateBaseLinkCost(pick1, pick2);
             double val = city.generateBaseLinkValue(pick1, pick2);
-            newSystem.addLink(pick1, pick2, cost, val);
+            systemLinks.add(new TransitLink(pick1, pick2, cost, val));
         } // Store destinations as a set / dict, add links to destination on create
-        return newSystem;
+        return new TransitSystem(systemLinks);
     }
 
 

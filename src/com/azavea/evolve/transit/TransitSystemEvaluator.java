@@ -18,12 +18,12 @@ public class TransitSystemEvaluator implements FitnessEvaluator<TransitSystem> {
 
     @Override
     public double getFitness(TransitSystem transitSystem, List<? extends TransitSystem> transitSystems) {
-        double fitness = 0;
         double totalCost = 0;
         double totalValue = 0;
         HashSet<TransitLink> uniqueLinks = new HashSet<TransitLink>();
         // First, get our total system cost: That's the cost of all links.
-        for (TransitLink link: transitSystem.getLinks()) {
+        List<TransitLink> systemLinks = transitSystem.getLinks();
+        for (TransitLink link: systemLinks) {
             totalCost += link.getBaseCost();
         }
         // Next, for each node in the network, traverse the network and sum up the values of the nodes it can reach.
@@ -52,25 +52,25 @@ public class TransitSystemEvaluator implements FitnessEvaluator<TransitSystem> {
         jumps.add(new Integer(0));
         int prevDegree = 0;
         TransitDestination current;
-        double decayFactor = 1.0;
+        // The first cell visited will be source, so it won't count toward the value. Therefore we divide the scaling
+        // factor by the decay factor so that at the first degree of separation, decayFactor == 1.0.
+        double decayFactor = 1.0 / LINK_VALUE_DECAY_FACTOR;
         while ((current = toVisit.poll()) != null) {
             Integer degree = jumps.poll();
             // If we've gone out another degree in the graph, we decay the values.
-            if (degree > prevDegree) {
-                prevDegree = degree;
-                decayFactor = decayFactor * LINK_VALUE_DECAY_FACTOR;
-            }
-            valueSum += city.generateBaseLinkValue(current, source) * decayFactor;
-            // Traverse the links out from the current node.
-            for (TransitLink link: current.getLinks()) {
-                TransitDestination nextCell = link.getConnected(current);
-                if (!alreadyVisited.contains(nextCell)) {
-                    toVisit.add(nextCell);
-                    jumps.add(new Integer(degree + 1));
+            if(!alreadyVisited.contains(current)) {
+                valueSum += city.generateBaseLinkValue(current, source) * Math.pow(LINK_VALUE_DECAY_FACTOR, degree.doubleValue());
+                // Traverse the links out from the current node.
+                for (TransitLink link : current.getLinks()) {
+                    TransitDestination nextCell = link.getConnected(current);
+                    if (!alreadyVisited.contains(nextCell)) {
+                        toVisit.add(nextCell);
+                        jumps.add(new Integer(degree + 1));
+                    }
                 }
+                // Mark this node as visited
+                alreadyVisited.add(current);
             }
-            // Mark this node as visited
-            alreadyVisited.add(current);
         }
         return valueSum;
     }

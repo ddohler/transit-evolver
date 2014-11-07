@@ -7,11 +7,11 @@ import java.util.*;
 /**
  * Created by AZVA-INT\ddohler on 7/28/14.
  */
-public class TransitSystemEvaluator implements FitnessEvaluator<TransitSystem> {
+public class CostValueRatioEvaluator implements FitnessEvaluator<TransitSystem> {
     public static final double LINK_VALUE_DECAY_FACTOR = 0.8;
     private final City city;
 
-    public TransitSystemEvaluator(City city) {
+    public CostValueRatioEvaluator(City city) {
         this.city = city;
     }
 
@@ -59,7 +59,7 @@ public class TransitSystemEvaluator implements FitnessEvaluator<TransitSystem> {
             Integer degree = jumps.poll();
             // If we've gone out another degree in the graph, we decay the values.
             if(!alreadyVisited.contains(current)) {
-                valueSum += city.generateBaseLinkValue(current, source) * Math.pow(LINK_VALUE_DECAY_FACTOR, degree.doubleValue());
+                valueSum += city.generateBaseLinkValue(current.getCell(), source.getCell()) * Math.pow(LINK_VALUE_DECAY_FACTOR, degree.doubleValue());
                 // Traverse the links out from the current node.
                 for (TransitLink link : current.getLinks()) {
                     TransitDestination nextCell = link.getConnected(current);

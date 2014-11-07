@@ -17,17 +17,6 @@ public class City {
         this.cells = cells;
         this.costFactor = costFactor;
         this.valueFactor = valueFactor;
-        // Normalize attraction scores over the whole city to be in 0...1.
-        // Guarantees that all cells have a relativeAttraction score.
-        // Get the sum
-        double totalAttraction = 0;
-        for (CityCell c : cells) {
-            totalAttraction += c.getAbsoluteAttraction();
-        }
-        // Normalize
-        for (CityCell c: cells) {
-            c.setRelativeAttraction(c.getAbsoluteAttraction()/totalAttraction);
-        }
     }
 
     public List<CityCell> getCells() {
@@ -50,7 +39,6 @@ public class City {
         if (cell1 == cell2) {
             return 0.0;
         }
-        return valueFactor * (cell1.getProduction() * cell2.getRelativeAttraction() +
-                                cell2.getProduction() * cell1.getRelativeAttraction());
+        return valueFactor * (cell1.flowToCell(cell2) + cell2.flowToCell(cell1));
     }
 }

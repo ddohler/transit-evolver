@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class TransitSystemEvaluatorTest {
     City thirtyCells = Cities.thirtyCells();
-    TransitSystemEvaluator evaluator = new TransitSystemEvaluator(thirtyCells);
+    CostValueRatioEvaluator evaluator = new CostValueRatioEvaluator(thirtyCells);
     Random rng = new MersenneTwisterRNG();
     TransitSystemCandidateFactory candidate_factory = new TransitSystemCandidateFactory(thirtyCells, 0.2);
     List<TransitSystem> population;

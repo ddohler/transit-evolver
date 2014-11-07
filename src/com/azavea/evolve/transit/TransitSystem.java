@@ -50,9 +50,9 @@ public class TransitSystem {
         }
     }
 
-    private boolean removeLinkFromDest(CityCell cell, TransitLink link) {
-        if (destinations.containsKey(cell.getLocation())) {
-            destinations.get(cell.getLocation()).removeLink(link);
+    private boolean removeLinkFromDest(TransitDestination dest, TransitLink link) {
+        if (destinations.containsKey(dest.getCell().getLocation())) {
+            destinations.get(dest.getCell().getLocation()).removeLink(link);
             return true;
         }
         return false;
@@ -82,8 +82,8 @@ public class TransitSystem {
 
     // Add a link based on a TransitLink object.
     private void addLink(TransitLink link) {
-        TransitDestination dest1 = getOrCreateDestination(link.getCell1());
-        TransitDestination dest2 = getOrCreateDestination(link.getCell2());
+        TransitDestination dest1 = getOrCreateDestination(link.getDest1().getCell());
+        TransitDestination dest2 = getOrCreateDestination(link.getDest2().getCell());
         TransitLink newLink = new TransitLink(dest1, dest2, link.getBaseCost(), link.getBaseValue());
         dest1.addLink(newLink);
         dest2.addLink(newLink);
@@ -92,8 +92,8 @@ public class TransitSystem {
 
     // Remove a link from this system, and remove it from its destinations, too.
     private void removeLink(TransitLink link) {
-        removeLinkFromDest(link.getCell1(), link);
-        removeLinkFromDest(link.getCell2(), link);
+        removeLinkFromDest(link.getDest1(), link);
+        removeLinkFromDest(link.getDest2(), link);
         links.remove(link);
     }
 }

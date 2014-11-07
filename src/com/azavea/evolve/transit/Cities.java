@@ -1,6 +1,7 @@
 package com.azavea.evolve.transit;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by AZVA-INT\ddohler on 8/12/14.
@@ -11,46 +12,46 @@ public class Cities {
         // Values are:
         // Generation, AbsoluteAttraction, X, Y
         // Column 0, top to bottom
-        cells.add(new CityCell(2.0, 0.34, 0, 4));
-        cells.add(new CityCell(15.0, 2.55, 0, 3));
-        cells.add(new CityCell(1.0, 0.17, 0, 2));
-        cells.add(new CityCell(1.0, 0.17, 0, 1));
-        cells.add(new CityCell(1.0, 0.17, 0, 0));
+        cells.add(new ProportionalFlowCell(2.0, new Location(0, 4), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(15.0, new Location(0, 3), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(1.0, new Location(0, 2), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(1.0, new Location(0, 1), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(1.0, new Location(0, 0), UUID.randomUUID().toString()));
 
         // Column 1, top to bottom
-        cells.add(new CityCell(1.0, 0.17, 1, 4));
-        cells.add(new CityCell(2.0, 0.34, 1, 3));
-        cells.add(new CityCell(5.0, 0.85, 1, 2));
-        cells.add(new CityCell(1.0, 0.17, 1, 1));
-        cells.add(new CityCell(1.0, 0.17, 1, 0));
+        cells.add(new ProportionalFlowCell(1.0, new Location(1, 4), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(2.0, new Location(1, 3), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(5.0, new Location(1, 2), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(1.0, new Location(1, 1), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(1.0, new Location(1, 0), UUID.randomUUID().toString()));
 
         // Column 2, top to bottom
-        cells.add(new CityCell(1.0, 0.17, 2, 4));
-        cells.add(new CityCell(5.0, 0.85, 2, 3));
-        cells.add(new CityCell(25.0, 4.25, 2, 2));
-        cells.add(new CityCell(5.0, 0.85, 2, 1));
-        cells.add(new CityCell(1.0, 0.17, 2, 0));
+        cells.add(new ProportionalFlowCell(1.0, new Location(2, 4), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(5.0, new Location(2, 3), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(25.0, new Location(2, 2), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(5.0, new Location(2, 1), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(1.0, new Location(2, 0), UUID.randomUUID().toString()));
 
         // Column 3
-        cells.add(new CityCell(1.0, 0.17, 3, 4));
-        cells.add(new CityCell(10.0, 1.7, 3, 3));
-        cells.add(new CityCell(50.0, 8.5, 3, 2));
-        cells.add(new CityCell(10.0, 1.7, 3, 1));
-        cells.add(new CityCell(1.0, 0.17, 3, 0));
+        cells.add(new ProportionalFlowCell(1.0, new Location(3, 4), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(10.0, new Location(3, 3), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(50.0, new Location(3, 2), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(10.0, new Location(3, 1), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(1.0, new Location(3, 0), UUID.randomUUID().toString()));
 
         // Column 4
-        cells.add(new CityCell(1.0, 0.17, 4, 4));
-        cells.add(new CityCell(5.0, 0.85, 4, 3));
-        cells.add(new CityCell(10.0, 1.7, 4, 2));
-        cells.add(new CityCell(10.0, 1.7, 4, 1));
-        cells.add(new CityCell(5.0, 0.85, 4, 0));
+        cells.add(new ProportionalFlowCell(1.0, new Location(4, 4), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(5.0, new Location(4, 3), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(10.0, new Location(4, 2), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(10.0, new Location(4, 1), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(5.0, new Location(4, 0), UUID.randomUUID().toString()));
 
         // Column 5
-        cells.add(new CityCell(1.0, 0.17, 5, 4));
-        cells.add(new CityCell(1.0, 0.17, 5, 3));
-        cells.add(new CityCell(1.0, 0.17, 5, 2));
-        cells.add(new CityCell(5.0, 0.85, 5, 1));
-        cells.add(new CityCell(20.0, 3.4, 5, 0));
+        cells.add(new ProportionalFlowCell(1.0, new Location(5, 4), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(1.0, new Location(5, 3), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(1.0, new Location(5, 2), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(5.0, new Location(5, 1), UUID.randomUUID().toString()));
+        cells.add(new ProportionalFlowCell(20.0, new Location(5, 0), UUID.randomUUID().toString()));
 
         // Scale things so that there is room for the values to oscillate.
         double scaleCost = 1.0;

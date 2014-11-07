@@ -30,7 +30,7 @@ public class Main {
 
         EvolutionaryOperator<TransitSystem> pipeline = new EvolutionPipeline<TransitSystem>(operators);
 
-        FitnessEvaluator<TransitSystem> fitnessEvaluator = new TransitSystemEvaluator(city);
+        FitnessEvaluator<TransitSystem> fitnessEvaluator = new CostValueRatioEvaluator(city);
 
         SelectionStrategy<Object> selectionStrategy = new RankSelection();
         Random rng = new MersenneTwisterRNG();

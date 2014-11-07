@@ -9,30 +9,30 @@ package com.azavea.evolve.transit;
  * Value represents a rough measure of the value of having that connection to the residents of the city.
  */
 public class TransitLink {
-    private final TransitDestination cell1;
-    private final TransitDestination cell2;
+    private final TransitDestination dest1;
+    private final TransitDestination dest2;
     private final double baseCost; // The cost of this link, based only on the two cells it connects
     private final double baseValue; // The value of this link, based only on the two cells it connects
 
-    public TransitLink(TransitDestination cell1, TransitDestination cell2, double cost, double value) {
+    public TransitLink(TransitDestination dest1, TransitDestination dest2, double cost, double value) {
         // Links are not directed, so enforce an arbitrary ordering so that equality and hashCodes are easier.
-        if ((cell1.getLocation().compareTo(cell2.getLocation())) > 0) {
-            this.cell1 = cell1;
-            this.cell2 = cell2;
+        if ((dest1.getCell().getLocation().compareTo(dest2.getCell().getLocation())) > 0) {
+            this.dest1 = dest1;
+            this.dest2 = dest2;
         } else {
-            this.cell1 = cell2;
-            this.cell2 = cell1;
+            this.dest1 = dest2;
+            this.dest2 = dest1;
         }
         this.baseCost = cost;
         this.baseValue = value;
     }
 
-    public CityCell getCell1() {
-        return cell1;
+    public TransitDestination getDest1() {
+        return dest1;
     }
 
-    public CityCell getCell2() {
-        return cell2;
+    public TransitDestination getDest2() {
+        return dest2;
     }
 
     public double getBaseCost() {
@@ -43,18 +43,18 @@ public class TransitLink {
         return baseValue;
     }
 
-    public TransitDestination getConnected(TransitDestination cell) {
-        if (cell1 == cell) {
-            return cell2;
-        } else if (cell2 == cell) {
-            return cell1;
+    public TransitDestination getConnected(TransitDestination dest) {
+        if (dest1 == dest) {
+            return dest1;
+        } else if (dest2 == dest) {
+            return dest1;
         } else {
             return null;
         }
     }
 
     public boolean isSelfLink() {
-        return cell1 == cell2;
+        return dest1 == dest2;
     }
 
     @Override
@@ -63,7 +63,8 @@ public class TransitLink {
         if (other == this) return true;
         if (!(other instanceof TransitLink)) return false;
         TransitLink otherLink = (TransitLink)other;
-        if (cell1.getLocation() == otherLink.cell1.getLocation() && cell2.getLocation() == otherLink.cell2.getLocation()) {
+        if (dest1.getCell().getLocation() == otherLink.dest1.getCell().getLocation() &&
+            dest2.getCell().getLocation() == otherLink.dest2.getCell().getLocation()) {
             return true;
         }
         return false;
@@ -71,11 +72,11 @@ public class TransitLink {
 
     @Override
     public int hashCode() {
-        return (cell1.toString() + cell2.toString()).hashCode();
+        return (dest1.toString() + dest2.toString()).hashCode();
     }
 
     @Override
     public String toString() {
-        return cell1.toString() + "-->" + cell2.toString();
+        return dest1.toString() + "-->" + dest2.toString();
     }
 }

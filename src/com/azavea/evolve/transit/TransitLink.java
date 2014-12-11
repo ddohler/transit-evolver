@@ -11,10 +11,8 @@ package com.azavea.evolve.transit;
 public class TransitLink {
     private final TransitDestination dest1;
     private final TransitDestination dest2;
-    private final double baseCost; // The cost of this link, based only on the two cells it connects
-    private final double baseValue; // The value of this link, based only on the two cells it connects
 
-    public TransitLink(TransitDestination dest1, TransitDestination dest2, double cost, double value) {
+    public TransitLink(TransitDestination dest1, TransitDestination dest2) {
         // Links are not directed, so enforce an arbitrary ordering so that equality and hashCodes are easier.
         if ((dest1.getCell().getLocation().compareTo(dest2.getCell().getLocation())) > 0) {
             this.dest1 = dest1;
@@ -23,8 +21,6 @@ public class TransitLink {
             this.dest1 = dest2;
             this.dest2 = dest1;
         }
-        this.baseCost = cost;
-        this.baseValue = value;
     }
 
     public TransitDestination getDest1() {
@@ -35,12 +31,12 @@ public class TransitLink {
         return dest2;
     }
 
-    public double getBaseCost() {
-        return baseCost;
+    public double getLength() {
+        return dest1.getCell().distanceToCell(dest2.getCell());
     }
 
-    public double getBaseValue() {
-        return baseValue;
+    public double getFlow() {
+        return dest1.getCell().flowToCell(dest2.getCell()) + dest2.getCell().flowToCell(dest1.getCell());
     }
 
     public TransitDestination getConnected(TransitDestination dest) {
@@ -77,6 +73,6 @@ public class TransitLink {
 
     @Override
     public String toString() {
-        return dest1.toString() + "-->" + dest2.toString();
+        return dest1.getCell().toString() + "-->" + dest2.getCell().toString();
     }
 }

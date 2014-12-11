@@ -30,4 +30,10 @@ public class ProportionalFlowCell extends CityCell {
     public double distanceToCell(CityCell other) {
         return location.distance_to(other.getLocation());
     }
+
+    // TODO: Move to base class
+    @Override
+    public String toString() {
+        return location.toString();
+    }
 }

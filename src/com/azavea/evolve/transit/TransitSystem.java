@@ -74,7 +74,7 @@ public class TransitSystem {
     private void addLink(CityCell cell1, CityCell cell2, double cost, double val) {
         TransitDestination dest1 = getOrCreateDestination(cell1);
         TransitDestination dest2 = getOrCreateDestination(cell2);
-        TransitLink newLink = new TransitLink(dest1, dest2, cost, val);
+        TransitLink newLink = new TransitLink(dest1, dest2);
         dest1.addLink(newLink);
         dest2.addLink(newLink);
         links.add(newLink);
@@ -84,7 +84,7 @@ public class TransitSystem {
     private void addLink(TransitLink link) {
         TransitDestination dest1 = getOrCreateDestination(link.getDest1().getCell());
         TransitDestination dest2 = getOrCreateDestination(link.getDest2().getCell());
-        TransitLink newLink = new TransitLink(dest1, dest2, link.getBaseCost(), link.getBaseValue());
+        TransitLink newLink = new TransitLink(dest1, dest2);
         dest1.addLink(newLink);
         dest2.addLink(newLink);
         links.add(newLink);

@@ -18,9 +18,11 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) {
-        // Stub so that this will compile.
-        // TODO: Create a city generator to read in real data.
-        City city = Cities.thirtyCells();
+        double scaleCost = 0.000642539;
+        double scaleValue = 559896;
+        double budget = 100000;
+        City city = Cities.fromTractFlowCSV(args[0], scaleCost, scaleValue);
+        //City city = Cities.thirtyCells(scaleCost, scaleValue);
 
         CandidateFactory<TransitSystem> candidateFactory = new TransitSystemCandidateFactory(city, 1.0);
         List<EvolutionaryOperator<TransitSystem>> operators
@@ -30,7 +32,7 @@ public class Main {
 
         EvolutionaryOperator<TransitSystem> pipeline = new EvolutionPipeline<TransitSystem>(operators);
 
-        FitnessEvaluator<TransitSystem> fitnessEvaluator = new CostValueRatioEvaluator(city);
+        FitnessEvaluator<TransitSystem> fitnessEvaluator = new FixedBudgetEvaluator(city, budget, scaleCost, scaleValue);
 
         SelectionStrategy<Object> selectionStrategy = new RankSelection();
         Random rng = new MersenneTwisterRNG();

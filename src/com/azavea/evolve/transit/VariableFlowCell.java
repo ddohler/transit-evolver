@@ -29,16 +29,21 @@ public class VariableFlowCell extends CityCell {
     }
 
     public double flowToCell(CityCell other) {
-        return outboundTravel.get(other);
+        Double flow = outboundTravel.get(other);
+        if (flow == null) {
+            return 0.0;
+        }
+        return flow;
     }
     public double distanceToCell(CityCell other) {
         return location.distance_to(other.getLocation());
     }
 
-    public double addOutboundDestination(CityCell other, double value) {
-        return outboundTravel.put(other, value);
+    public void addOutboundDestination(CityCell other, double value) {
+        outboundTravel.put(other, value);
     }
 
+    // TODO: Move to base class
     @Override
     public String toString() {
         return location.toString();

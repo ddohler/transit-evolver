@@ -60,7 +60,7 @@ public class TransitSystemCandidateFactory extends AbstractCandidateFactory<Tran
 
             double cost = city.generateBaseLinkCost(pick1.getCell(), pick2.getCell());
             double val = city.generateBaseLinkValue(pick1.getCell(), pick2.getCell());
-            systemLinks.add(new TransitLink(pick1, pick2, cost, val));
+            systemLinks.add(new TransitLink(pick1, pick2));
         } // Store destinations as a set / dict, add links to destination on create
         return new TransitSystem(systemLinks);
     }

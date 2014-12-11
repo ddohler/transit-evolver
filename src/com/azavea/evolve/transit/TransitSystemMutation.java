@@ -43,7 +43,7 @@ public class TransitSystemMutation implements EvolutionaryOperator<TransitSystem
                     double cost = city.generateBaseLinkCost(pick1.getCell(), pick2.getCell());
                     double val = city.generateBaseLinkValue(pick1.getCell(), pick2.getCell());
 
-                    systemLinks.add(new TransitLink(pick1, pick2, cost, val));
+                    systemLinks.add(new TransitLink(pick1, pick2));
                 } else { // Remove a random link when false.
                     if (systemLinks.size() != 0) {
                         systemLinks.remove(rng.nextInt(systemLinks.size()));

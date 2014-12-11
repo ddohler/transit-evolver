@@ -27,6 +27,7 @@ public class City {
      *   Calculate what a link between two cells would cost. Currently, just
      *   the Euclidean distance between them.
      */
+    // TODO: Refactor cost / value scaling away from City and into FitnessEvaluators
     public double generateBaseLinkCost(CityCell cell1, CityCell cell2) {
         return costFactor * cell1.distanceToCell(cell2);
     }
@@ -35,6 +36,7 @@ public class City {
      * Calculate the base value of a link (i.e., the value to the two cells it connects,
      * without factoring in any values to other cells).
      */
+    // TODO: Refactor cost / value scaling away from City and into FitnessEvaluators
     public double generateBaseLinkValue(CityCell cell1, CityCell cell2) {
         if (cell1 == cell2) {
             return 0.0;

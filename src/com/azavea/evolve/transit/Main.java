@@ -7,6 +7,7 @@ import org.uncommons.watchmaker.framework.*;
 import org.uncommons.watchmaker.framework.operators.EvolutionPipeline;
 import org.uncommons.watchmaker.framework.selection.RankSelection;
 import org.uncommons.watchmaker.framework.selection.RouletteWheelSelection;
+import org.uncommons.watchmaker.framework.termination.GenerationCount;
 import org.uncommons.watchmaker.framework.termination.Stagnation;
 import org.uncommons.watchmaker.framework.termination.TargetFitness;
 
@@ -20,15 +21,18 @@ public class Main {
     public static void main(String[] args) {
         double scaleCost = 0.000642539;
         double scaleValue = 559896;
-        double budget = 100000;
+        double budget = 500;
         City city = Cities.fromTractFlowCSV(args[0], scaleCost, scaleValue);
         //City city = Cities.thirtyCells(scaleCost, scaleValue);
 
-        CandidateFactory<TransitSystem> candidateFactory = new TransitSystemCandidateFactory(city, 1.0);
+        CandidateFactory<TransitSystem> candidateFactory = new TransitSystemCandidateFactory(city, 0.01);
         List<EvolutionaryOperator<TransitSystem>> operators
                 = new LinkedList<EvolutionaryOperator<TransitSystem>>();
         operators.add(new TransitSystemCrossover(1));
-        operators.add(new TransitSystemMutation(city, new Probability(0.10)));
+        operators.add(new AddDeleteLinkMutation(city, new Probability(0.25)));
+        boolean deleteAfterAdd = true;
+        operators.add(new ExtendMutation(city, new Probability(0.01), deleteAfterAdd));
+        operators.add(new StitchMutation(new Probability(0.10), deleteAfterAdd));
 
         EvolutionaryOperator<TransitSystem> pipeline = new EvolutionPipeline<TransitSystem>(operators);
 
@@ -52,10 +56,11 @@ public class Main {
         });
 
         // Actually evolve it
-        TransitSystem fittest = engine.evolve(250, 1, new Stagnation(1000, true));
+        //TransitSystem fittest = engine.evolve(250, 1, new Stagnation(1000, true));
+        TransitSystem fittest = engine.evolve(500, 0, new GenerationCount(5000));
         System.out.println("Outputting Transit System Links\n");
         for(TransitLink tl: fittest.getLinks()) {
-            System.out.println(tl.toString() + "\n");
+            System.out.println(tl.toWKT() + "\n");
         }
 
         System.out.println("Done.");

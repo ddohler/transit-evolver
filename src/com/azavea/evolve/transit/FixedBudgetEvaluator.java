@@ -41,8 +41,8 @@ public class FixedBudgetEvaluator extends BaseTransitSystemEvaluator implements 
         for (Enumeration<TransitDestination> e = transitSystem.getDestinations().elements();
              e.hasMoreElements();) {
             TransitDestination dest = e.nextElement();
-            // Don't decay -- the value of links is based off actual travel, rather than possible travel.
-            totalValue = totalValue + decayedSystemValueFromStartingCell(dest, city, 1.0);
+            // Decay somewhat so that not every link to a source of traffic is equally good.
+            totalValue = totalValue + decayedSystemValueFromStartingCell(dest, city, 0.8);
         }
 
         return totalValue * scaleValue;

@@ -20,6 +20,18 @@ public abstract class BaseTransitSystemEvaluator {
     }
 
     /**
+     * Raise lengths to an exponent before adding; penalizes very long links more heavily.
+     */
+    protected double getSystemScaledLength(TransitSystem system, double exponent) {
+        double totalCost = 0;
+        List<TransitLink> systemLinks = system.getLinks();
+        for (TransitLink link : systemLinks) {
+            totalCost = totalCost + Math.pow(link.getLength(), exponent);
+        }
+        return totalCost;
+    }
+
+    /**
      * @param system
      * @return Summation of system link costs, based on link length and num passengers (passenger-meters traveled)
      */
@@ -27,7 +39,8 @@ public abstract class BaseTransitSystemEvaluator {
         double totalCost = 0;
         List<TransitLink> systemLinks = system.getLinks();
         for (TransitLink link : systemLinks) {
-            totalCost = totalCost + link.getLength() * link.getFlow() * 2; // 2: Return trip
+            totalCost = totalCost + link.getLength() * (link.getFlow() * 2 + 1); // +1: O-flow links have cost = length
+                                                                                 // 2: Return trip
         }
         return totalCost;
     }
@@ -52,7 +65,8 @@ public abstract class BaseTransitSystemEvaluator {
             Integer degree = jumps.poll();
             // If we've gone out another degree in the graph, we decay the values.
             if(!alreadyVisited.contains(current)) {
-                valueSum += city.generateBaseLinkValue(current.getCell(), source.getCell()) * Math.pow(linkValueDecayFactor, degree.doubleValue());
+                valueSum += ((current.getCell().flowToCell(source.getCell()) + source.getCell().flowToCell(source.getCell())) *
+                                Math.pow(linkValueDecayFactor, degree.doubleValue()));
                 // Traverse the links out from the current node.
                 for (TransitLink link : current.getLinks()) {
                     TransitDestination nextCell = link.getConnected(current);

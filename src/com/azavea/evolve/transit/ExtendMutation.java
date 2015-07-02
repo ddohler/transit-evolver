@@ -9,15 +9,18 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by AZVA-INT\ddohler on 7/28/14.
+ * Mutator that extends an existing link to some other cell
+ * Created by ddohler on 12/12/14.
  */
-public class TransitSystemMutation implements EvolutionaryOperator<TransitSystem> {
+public class ExtendMutation implements EvolutionaryOperator<TransitSystem> {
     private final City city;
     private final Probability mutationProbability;
+    private final boolean deleteAfterAdd;
 
-    public TransitSystemMutation(City city, Probability mutationProbability) {
+    public ExtendMutation(City city, Probability mutationProbability, boolean deleteAfterAdd) {
         this.city = city;
         this.mutationProbability = mutationProbability;
+        this.deleteAfterAdd = deleteAfterAdd;
     }
 
     /**
@@ -33,24 +36,18 @@ public class TransitSystemMutation implements EvolutionaryOperator<TransitSystem
         for (TransitSystem transitSys: population) {
             ArrayList<TransitLink> systemLinks = new ArrayList<TransitLink>(transitSys.getLinks());
 
-            // Add/remove a link?
+            // Extend a link -- also deletes a link so the total number of links stays fixed
             if (mutationProbability.nextEvent(rng)) {
-                // Choose between add / remove a link, equally likely.
-                if (rng.nextBoolean()) { // Add a random link when true.
-                    TransitDestination pick1 = new TransitDestination((cells.get(rng.nextInt(cells.size()))));
-                    TransitDestination pick2 = new TransitDestination(cells.get(rng.nextInt(cells.size())));
-
-                    double cost = city.generateBaseLinkCost(pick1.getCell(), pick2.getCell());
-                    double val = city.generateBaseLinkValue(pick1.getCell(), pick2.getCell());
-
-                    systemLinks.add(new TransitLink(pick1, pick2));
-                } else { // Remove a random link when false.
-                    if (systemLinks.size() != 0) {
-                        systemLinks.remove(rng.nextInt(systemLinks.size()));
-                    }
-                }
+                // Connect the link to another link
+                TransitLink link = systemLinks.get(rng.nextInt(systemLinks.size()));
+                TransitDestination pick1 = new TransitDestination((cells.get(rng.nextInt(cells.size()))));
+                TransitDestination pick2 = rng.nextBoolean() ? link.getDest1() : link.getDest2();
+                systemLinks.add(new TransitLink(pick1, pick2));
             }
             results.add(new TransitSystem(systemLinks));
+            if (deleteAfterAdd && systemLinks.size() != 0) {
+                systemLinks.remove(rng.nextInt(systemLinks.size()));
+            }
         }
         return results;
     }

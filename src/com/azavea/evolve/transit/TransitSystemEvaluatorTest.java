@@ -68,7 +68,7 @@ public class TransitSystemEvaluatorTest {
         TreeMap<Double, Integer> prevFitnessCounts = countFitnesses(population);
         double probability = 0.10;
         Probability mutationProbability = new Probability(probability);
-        TransitSystemMutation mutator = new TransitSystemMutation(thirtyCells, mutationProbability);
+        AddDeleteLinkMutation mutator = new AddDeleteLinkMutation(thirtyCells, mutationProbability);
         List<TransitSystem> newPop = mutator.apply(population, rng);
         TreeMap<Double, Integer> fitnessCounts = countFitnesses(population);
         double percentChangeSum = 0.0;

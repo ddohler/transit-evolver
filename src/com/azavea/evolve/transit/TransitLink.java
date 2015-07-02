@@ -75,4 +75,9 @@ public class TransitLink {
     public String toString() {
         return dest1.getCell().toString() + "-->" + dest2.getCell().toString();
     }
+
+    public String toWKT() {
+        return "LINESTRING (" + (dest1.getCell().getLocation().x() + " " + dest1.getCell().getLocation().y() + "," +
+                dest2.getCell().getLocation().x() + " " + dest2.getCell().getLocation().y() + ")");
+    }
 }
